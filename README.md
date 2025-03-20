@@ -1,6 +1,6 @@
 # Ra2211028020012
-Question1 social-media-analytics
-Output : Screenshot and Explation
+Question 1 : social-media-analytics
+Output : Screenshot of Each View
 
 Desktop View
 -Displayed as a grid with 3 columns  
@@ -13,4 +13,12 @@ Mobile View
 - Components are stacked vertically for better mobile usability
   
 ![image](https://github.com/user-attachments/assets/2026e6b7-2158-4f2b-b28e-bbf1e2993b94)
+
+Question 2 : Average Calculator Problem
+
+![image](https://github.com/user-attachments/assets/617d44ef-f0d4-4dcd-b919-7fde056aa7e6)
+
+
+
+
 
