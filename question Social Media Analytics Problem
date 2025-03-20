@@ -1,1 +1,153 @@
+#Create Sample Components
+#Header.tsx
+import { AppBar, Toolbar, Typography } from '@mui/material';
+
+const Header = () => (
+  <AppBar position="static">
+    <Toolbar>
+      <Typography variant="h6">Social Media Analytics</Typography>
+    </Toolbar>
+  </AppBar>
+);
+
+export default Header;
+
+#AnalyticsCard.tsx
+import { Card, CardContent, Typography } from '@mui/material';
+
+interface AnalyticsCardProps {
+  title: string;
+  value: string;
+}
+
+const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ title, value }) => (
+  <Card>
+    <CardContent>
+      <Typography variant="h6">{title}</Typography>
+      <Typography variant="body1">{value}</Typography>
+    </CardContent>
+  </Card>
+);
+
+export default AnalyticsCard;
+#index.tsx
+import Header from '../components/Header';
+import AnalyticsCard from '../components/AnalyticsCard';
+
+const Home = () => {
+  return (
+    <>
+      <Header />
+      <div style={{ padding: '20px', display: 'grid', gap: '20px' }}>
+        <AnalyticsCard title="Likes" value="120" />
+        <AnalyticsCard title="Comments" value="30" />
+        <AnalyticsCard title="Shares" value="15" />
+      </div>
+    </>
+  );
+};
+
+export default Home;
+
+#Create a Utility Function for Data Handling
+#formatNumber.ts
+export const formatNumber = (num: number): string => {
+  return num.toLocaleString();
+};
+
+#Create TypeScript Types
+#index.ts
+export interface AnalyticsData {
+  likes: number;
+  comments: number;
+  shares: number;
+}
+
+#Create a Service to Fetch Data
+#analyticsService.ts
+import axios from 'axios';
+
+export const getAnalyticsData = async () => {
+  const response = await axios.get('/api/analytics');
+  return response.data;
+};
+
+#Use a Hook for Data Fetching
+#useAnalytics.ts
+import { useEffect, useState } from 'react';
+import { getAnalyticsData } from '../services/analyticsService';
+import { AnalyticsData } from '../types';
+
+const useAnalytics = () => {
+  const [data, setData] = useState<AnalyticsData | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getAnalyticsData();
+      setData(result);
+    };
+
+    fetchData();
+  }, []);
+
+  return data;
+};
+
+export default useAnalytics;
+
+#Connect Data to Components
+#Update index.tsx to use the data:
+import Header from '../components/Header';
+import AnalyticsCard from '../components/AnalyticsCard';
+import useAnalytics from '../hooks/useAnalytics';
+
+const Home = () => {
+  const data = useAnalytics();
+
+  if (!data) return <p>Loading...</p>;
+
+  return (
+    <>
+      <Header />
+      <div style={{ padding: '20px', display: 'grid', gap: '20px' }}>
+        <AnalyticsCard title="Likes" value={data.likes.toString()} />
+        <AnalyticsCard title="Comments" value={data.comments.toString()} />
+        <AnalyticsCard title="Shares" value={data.shares.toString()} />
+      </div>
+    </>
+  );
+};
+
+export default Home;
+
+#Add Responsive Styling
+#globals.css
+body {
+  font-family: Arial, sans-serif;
+}
+
+@media (max-width: 600px) {
+  div {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 601px) {
+  div {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
