@@ -1,5 +1,4 @@
 #Create Sample Components
-#Header.tsx
 import { AppBar, Toolbar, Typography } from '@mui/material';
 
 const Header = () => (
@@ -12,7 +11,7 @@ const Header = () => (
 
 export default Header;
 
-#AnalyticsCard.tsx
+#AnalyticsCard
 import { Card, CardContent, Typography } from '@mui/material';
 
 interface AnalyticsCardProps {
@@ -50,13 +49,11 @@ const Home = () => {
 export default Home;
 
 #Create a Utility Function for Data Handling
-#formatNumber.ts
 export const formatNumber = (num: number): string => {
   return num.toLocaleString();
 };
 
 #Create TypeScript Types
-#index.ts
 export interface AnalyticsData {
   likes: number;
   comments: number;
@@ -64,7 +61,6 @@ export interface AnalyticsData {
 }
 
 #Create a Service to Fetch Data
-#analyticsService.ts
 import axios from 'axios';
 
 export const getAnalyticsData = async () => {
@@ -73,7 +69,6 @@ export const getAnalyticsData = async () => {
 };
 
 #Use a Hook for Data Fetching
-#useAnalytics.ts
 import { useEffect, useState } from 'react';
 import { getAnalyticsData } from '../services/analyticsService';
 import { AnalyticsData } from '../types';
@@ -96,7 +91,6 @@ const useAnalytics = () => {
 export default useAnalytics;
 
 #Connect Data to Components
-#Update index.tsx to use the data:
 import Header from '../components/Header';
 import AnalyticsCard from '../components/AnalyticsCard';
 import useAnalytics from '../hooks/useAnalytics';
@@ -121,7 +115,6 @@ const Home = () => {
 export default Home;
 
 #Add Responsive Styling
-#globals.css
 body {
   font-family: Arial, sans-serif;
 }
