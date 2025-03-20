@@ -1,1 +1,84 @@
+# Define TypeScript types:
+export interface AverageRequest {
+  numbers: number[];
+}
+
+#Create a middleware for request validation
+import { Request, Response, NextFunction } from 'express';
+
+export const validateRequest = (req: Request, res: Response, next: NextFunction) => {
+  const { numbers } = req.body;
+
+  if (!Array.isArray(numbers) || numbers.length === 0) {
+    return res.status(400).json({ error: 'Invalid input: numbers must be a non-empty array' });
+  }
+
+  if (!numbers.every(num => typeof num === 'number')) {
+    return res.status(400).json({ error: 'Invalid input: all elements must be numbers' });
+  }
+
+  next();
+};
+
+#Create logic for calculating the average
+import { Request, Response } from 'express';
+import { AverageRequest } from '../types';
+
+export const calculateAverage = (req: Request, res: Response) => {
+  const { numbers } = req.body as AverageRequest;
+
+  if (numbers.length === 0) {
+    return res.status(400).json({ error: 'Empty array provided' });
+  }
+
+  const sum = numbers.reduce((acc, num) => acc + num, 0);
+  const average = sum / numbers.length;
+
+  res.status(200).json({ average });
+};
+
+#Set up routing
+import { Router } from 'express';
+import { calculateAverage } from '../controllers/averageController';
+import { validateRequest } from '../middlewares/validateRequest';
+
+const router = Router();
+
+router.post('/average', validateRequest, calculateAverage);
+
+export default router;
+
+#Setup Express.js app
+#app.ts
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import averageRoutes from './routes/averageRoutes';
+
+const app = express();
+
+app.use(bodyParser.json());
+app.use(cors());
+
+app.use('/api', averageRoutes);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+#Add packages.json
+"scripts": {
+  "build": "tsc",
+  "start": "node dist/app.js",
+  "dev": "ts-node src/app.ts"
+}
+
+
+
+
+
+
+
 
